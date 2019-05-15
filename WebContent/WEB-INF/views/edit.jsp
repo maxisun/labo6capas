@@ -6,9 +6,27 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Ingrese un Estudiante</title>
+<title>Editar Estudiante</title>
 </head>
 <body>
+	<form:form action="${pageContext.request.contextPath}/editData" method="POST" modelAttribute="student">
 	
+		<form:input type="hidden" name="id" path="cStudent"/>
+		
+		<label>Ingrese un nombre: </label>
+		<form:input type="text" name="name" path="sName"/><br>
+		
+		<label>Ingrese un apellido: </label>
+		<form:input type="text" name="lname" path="lName"/><br>
+		
+		<label>Ingrese edad: </label>
+		<form:input type="number" name="age" path="sAge"/><br>
+		
+		<label>Estado del estudiante</label><br>
+		<form:radiobutton name="status" path="bActivo" value="true"/><label>Activo</label><br>
+		<form:radiobutton name="status" path="bActivo" value="false"/><label>Inactivo</label><br>
+		
+		<input type="submit" value="Save Changes">
+	</form:form>
 </body>
 </html>

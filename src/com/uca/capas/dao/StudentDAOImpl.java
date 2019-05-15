@@ -52,8 +52,22 @@ public class StudentDAOImpl implements StudentDAO{
 	}
 
 	@Override
-	public int delete(Student s) throws DataAccessException {
+	@Transactional
+	public int delete(String name) throws DataAccessException {
 		// TODO Auto-generated method stub
-		return 0;
+		try{
+			StringBuffer sb= new StringBuffer();
+			//sb.append("select * from public.student WHERE s_name=:name");
+			sb.append("DELETE FROM public.student WHERE s_name=:name");
+			Query query = entityManager.createNativeQuery(sb.toString(),Student.class);
+			query.setParameter("name", name);
+			query.executeUpdate();
+			 /*Student student= (Student) query.setMaxResults(1).getSingleResult();
+			 entityManager.remove(student);	*/
+			 return 1;
+		} catch(Throwable e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 }

@@ -21,75 +21,21 @@
 					<td>${students.lName}</td>
 					<td>${students.sAge}</td>
 					<td>${students.activoDelegate}</td>
-					<td><button  onClick = "editar(this)">Editar</button></td>
+					<th><form  name="form1" action="${pageContext.request.contextPath}/edit" method="post">
+            		<INPUT type="hidden" name="id" value=${students.cStudent}>
+            		<INPUT type="Submit" value="Editar">
+					</form></th>
 				</tr>
 			</c:forEach>
 	</table>
 	<br>
-	<form action="${pageContext.request.contextPath}/findOne" method="post"> 
-		<label>Search: </label><input type="number" name="id"><br>
-		<input type="submit" value="Enviar">
+	<form action="${pageContext.request.contextPath}/deleteOne" method="post"> 
+		<label>Delete: </label><input type="text" name="name"><br>
+		<input type="submit" value="Delete">
 	</form>
 	<br>
 	<form action="${pageContext.request.contextPath}/save" method="post"> 
 		<input type="submit" value="Add a new student">
 	</form>
-	<script type="text/javascript">
-	function editar(td){
-		selectedRow = td.parentElement.parentElement;
-		let estado;
-		if(selectedRow.cells[3].innerHTML=='Activo'){
-			estado = true;
-		} else {
-			estado = false;
-		}
-		let student = {
-				sName: selectedRow.cells[0].innerHTML,
-				lName: selectedRow.cells[1].innerHTML,
-				sAge: parseInt(selectedRow.cells[2].innerHTML),
-				bActivo: estado
-		};
-		
-		
-		//enviando
-		var url = "http://localhost:8079/labo6/edit";
-
-		var json = JSON.stringify(student);
-		console.log(json);
-
-	/*	var xhr = new XMLHttpRequest();
-		xhr.open("POST", url, true);
-		xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
-		xhr.onload = function () {
-			var users = JSON.parse(xhr.responseText);
-			if (xhr.readyState == 4 && xhr.status == "201") {
-				//console.table(users);
-				console.log("success")
-			} else {
-				console.log("error")
-			}
-		}
-		xhr.send(json);
-		*/
-		let config = new Request("${pageContext.request.contextPath}/edit", {
-				method: 'POST',
-				headers: {
-						'Content-Type': 'application/json'
-				},
-				body: json,
-				mode: 'cors',
-				redirect: 'follow'					
-		})
-
-		fetch(config).then(res=>{
-			
-		}).catch((err)=>{
-			console.log(err)
-		})
-		
-	}
-
-
-	</script>
 </body>
 </html>

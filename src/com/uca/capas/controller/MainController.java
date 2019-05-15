@@ -84,14 +84,55 @@ public class MainController {
 		return mav;
 	}
 	
-	@RequestMapping(value="/edit", method = RequestMethod.POST, consumes="application/json")
-	public ModelAndView edit(@RequestBody Student json) {
-		//log.log(Level.INFO, json.getlName());
+	@RequestMapping(value = "/edit", method= RequestMethod.POST)
+	public ModelAndView edit(@RequestParam(value="id") int id ) {
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("student", new Student(json.getsName(), json.getlName(), json.getsAge(),json.getbActivo()));
+		Student student = null;
+		try {
+			student = studentDao.findOne(id);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		mav.addObject("student", student);
 		mav.setViewName("edit");
 		return mav;
 	}
 	
+	@RequestMapping("/editData")
+	public ModelAndView update(@ModelAttribute Student s) {
+		ModelAndView mav = new ModelAndView();
+		List<Student> students = null;
+		try {
+			log.info("Agrego un nuevo usuario");
+			//se le envia 1 porque es un nuevo usuario
+			studentDao.save(s, 0);
+		}
+		catch(Exception e) {
+			log.info("Error: "+e.toString());
+		}
+		students = studentDao.findAll();
+		log.info(students.get(0).getlName());
+		mav.addObject("students", students);
+		mav.setViewName("main");
+		return mav;
+	}
 	
+	@RequestMapping("/deleteOne")
+	public ModelAndView update(@RequestParam(value="name") String name) {
+		ModelAndView mav = new ModelAndView();
+		List<Student> students = null;
+		try {
+			//se le envia 1 porque es un nuevo usuario
+			studentDao.delete(name);
+		}
+		catch(Exception e) {
+			log.info("Error: "+e.toString());
+		}
+		students = studentDao.findAll();
+		log.info(students.get(0).getlName());
+		mav.addObject("students", students);
+		mav.setViewName("main");
+		return mav;
+	}
 }
